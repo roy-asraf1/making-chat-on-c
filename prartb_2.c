@@ -20,24 +20,7 @@
 #define DATA_SIZE (1024 * 1024 * 100)
 #define HASH_SIZE EVP_MAX_MD_SIZE
 
-// void calculate_md5(const void *data, size_t size, unsigned char *md) {
-//     EVP_MD_CTX *md_ctx;
-//     const EVP_MD *md_type;
-//     unsigned int md_len;
 
-//     md_ctx = EVP_MD_CTX_new();
-//     md_type = EVP_md5();
-
-//     EVP_DigestInit_ex(md_ctx, md_type, NULL);
-//     EVP_DigestUpdate(md_ctx, data, size);
-//     EVP_DigestFinal_ex(md_ctx, md, &md_len);
-
-//     EVP_MD_CTX_free(md_ctx);
-// }
-
-
-
-// Compute checksum (RFC 1071).
 unsigned short calculate_checksum(unsigned short *paddress, int len)
 {
     int nleft = len;
@@ -66,6 +49,7 @@ unsigned short calculate_checksum(unsigned short *paddress, int len)
 }
 
 void perform_ipv4_tcp_client_test(const char *ip, const char *port, const char *filename, bool is_quiet_mode) {
+    
     int sock;
     struct sockaddr_in server_addr;
     char buffer[BUFFER_SIZE];
@@ -173,7 +157,6 @@ void perform_ipv4_tcp_client_test(const char *ip, const char *port, const char *
     free(data);
     fclose(file);
 }
-
 
 void perform_ipv4_udp_client_test(const char *ip, const char *port, bool is_quiet_mode) {
     // Create UDP socket
@@ -865,18 +848,21 @@ int main(int argc, char *argv[]) {
     bool is_server = (strcmp(argv[1], "-s") == 0);
     bool is_performance_test = false;
     bool is_quiet_mode = false;
-
     // Check if performance test flag is set
-    if (argc >= 5 && strcmp(argv[4], "-p") == 0) {
+    if (argc >= 5 && strcmp(argv[3], "-p") == 0) {
         is_performance_test = true;
     }
-
     // Check if quiet mode flag is set
-    if (argc >= 6 && strcmp(argv[5], "-q") == 0) {
+    // if (argc >= 6 && strcmp(argv[4], "-q") == 0) {
+    //     printf("yesssssssssss\n");
+    //     is_quiet_mode = true;
+    // }
+   if ( strcmp(argv[4], "-q") == 0) {
+        printf("yesssssssssss\n");
         is_quiet_mode = true;
     }
-
     if (is_client) {
+        printf("-------------------\n");
         // Client-side implementation
         // Parse command line arguments
         char *ip = argv[2];
@@ -919,6 +905,7 @@ int main(int argc, char *argv[]) {
             return 1;
         }
     }  else if (is_server) {
+        printf("==============================\n");
         // Server-side implementation
         // Parse command line arguments
         if (argc < 3) {
