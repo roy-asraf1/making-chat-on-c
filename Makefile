@@ -1,17 +1,18 @@
-FLAGS = -Wall -g
 CC = gcc
+CFLAGS = -Wall -g
+OBJ = main.o client.o server.o chat.o
+NAME = stnc
 
+all: $(NAME)
 
-all: stnc
+$(NAME): $(OBJ)
+	$(CC) $(CFLAGS) $^ -o $@
 
+%.o: %.c
+	$(CC) $(CFLAGS) -c $< -o $@
 
+.PHONY: clean
 
-stnc.o: stnc.c 
-	$(CC) $(FLAGS) -c stnc.c 
-
-stnc: stnc.o
-	$(CC) $(FLAGS) -o stnc stnc.o
-
-.PHONEY: clean
 clean:
-	rm -f *.o *.a *.so stnc
+	rm -f $(OBJ) $(NAME)
+
